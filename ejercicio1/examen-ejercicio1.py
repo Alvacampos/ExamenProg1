@@ -1,16 +1,21 @@
 import math
 
+# ── UTILS FUNCTIONS ──────────────────────────────────────────────────────
+
 def print_line_break():
     print('\n' + '=' * 30 + '\n')
 
 def input_ledger():
     while True:
-        ledger = input('Ingrese el legajo del alumno: \n')
-        print_line_break()
-        if ledger.isdigit():
-            return ledger
-        else:
-            print('Legajo inválido, por favor ingrese solo números.')
+        getLedger = True
+        while getLedger:
+            print_line_break()
+            ledger = input('Ingrese el legajo del alumno: \n')
+            if ledger.isdigit():
+                return ledger
+            else:
+                print_line_break()
+                print('Legajo inválido, por favor ingrese solo números.')
 
 def add_student(name, ledger, studentsList, ledgerList):
     if(ledger in ledgerList):
@@ -98,6 +103,8 @@ def best_and_worst_student(studentsList):
     worst_student = min(studentsList, key=lambda student: student['gpa'])
     return best_student, worst_student
 
+# ── MAIN MENU ────────────────────────────────────────────────────────────
+
 print('Bienvenido al menu para gestion de alumnos\n')
 runProgram = True
 studentsList = []
@@ -112,13 +119,16 @@ while (runProgram):
     print('5. Ver todos los estudiantes y sus promedios.\n')
     print('6. Ver estadísticas generales.\n')
     print('7. Salir\n')
+    
     option = input('Seleccione una opcion: ')
+    
     match(option):
         case '1':
             print_line_break()
             name = input('Ingrese el nombre del alumno: \n').capitalize()
             ledger = input_ledger()
             add_student(name, ledger, studentsList, ledgerList)
+            
         case '2':
             print_line_break()
             show_students(studentsList, '1')
@@ -126,6 +136,7 @@ while (runProgram):
             student_index = search_student(ledger, studentsList)
             if student_index is not None:
                 add_grade_to_student(studentsList[student_index])
+                
         case '3':
             print_line_break()
             ledger = input_ledger()
@@ -133,13 +144,16 @@ while (runProgram):
             if student_index is not None:
                 queryQueue.append(ledger)
                 print(f'Alumno {studentsList[student_index]["name"]},  agregado a la cola de consultas correctamente\n')
+                
         case '4':
             print_line_break()
             show_first_in_queue(queryQueue)
+            
         case '5':
             print_line_break()
             print('Mostrando todos los estudiantes y sus promedios...\n')
             show_students(studentsList, '2')
+            
         case '6':
             print_line_break()
             print('Mostrando estadísticas generales...\n')
@@ -155,10 +169,12 @@ while (runProgram):
             waiting_query_count = len(queryQueue)
             print(f'Cantidad de consultas en espera: {waiting_query_count}\n')
             print_line_break()
+            
         case '7':
             print_line_break()
             print('Saliendo del programa...')
             runProgram = False
+            
         case _:
             print_line_break()
             print('Opcion no valida, por favor intente nuevamente.')
